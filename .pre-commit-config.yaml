@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=auto]
+      - id: check-added-large-files
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: pretty-format-json
+        args: [--autofix, --indent=4, --no-sort-keys]
+
+  - repo: https://github.com/boidolr/pre-commit-text
+    rev: v1.2.13
+    hooks:
+      - id: pretty-format-yaml
+        args: [--preserve-quotes]
+
+  # Optimize images for size
+  - repo: https://github.com/boidolr/pre-commit-images
+    rev: v1.5.1
+    hooks:
+      - id: optimize-avif
+      - id: optimize-jpg
+      - id: optimize-png
+      - id: optimize-svg
+      - id: optimize-webp
+
+  # Strip EXIF data from images
+  - repo: https://github.com/stefmolin/exif-stripper
+    rev: 0.1.2
+    hooks:
+      - id: strip-exif

@@ -1,0 +1,78 @@
+<!-- Author: Tomasz Gągor https://github.com/tgagor/hugo-PaperMod-bookshelf -->
+<!-- Shortcode presenting a book with a set of details -->
+<!--
+Parameters:
+title - book title
+subTitle - book sub title (optional)
+author - comma separated list of authors
+cover - link to the cover
+link1 - first link to the books shop page or review
+link2 - second link
+link3 - third link
+link4 - forth link
+
+For example:
+title="Extreme Ownership"
+subTitle="How U.S. Navy SEALs Lead and Win"
+author="Jocko Willink, Leif Babin"
+cover=images/book-cover.webp
+link1="https://www.amazon.pl/Extreme-Ownership-U-S-Navy-SEALs/dp/1250183863"
+-->
+
+{{- $width := "220" -}}
+{{- with .Get "width" -}}
+{{- $width = . -}}
+{{- end -}}
+{{- $tracking_params := slice "utm_medium" "blog" "utm_campaign" "affiliate_sale" "utm_id" "affiliate_sale" -}}
+{{- $amazon_affiliate := slice "tag" "gagor-21" -}}
+
+<figure {{ if or (.Get "class") (eq (.Get "align") "center") }} class="
+           {{- if eq (.Get "align") "center" }}align-center {{ end }}
+           {{- with .Get "class" }}{{ . }}{{- end }}"
+
+{{- end -}} style="display:flex;">
+    {{- if .Get "link" -}}
+        <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
+    {{- end }}
+    <img loading="lazy" src="{{ .Get "cover" }}{{- if eq (.Get "align") "center" }}#center{{- end }}"
+         {{- if or (.Get "alt") (.Get "caption") }}
+         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
+         {{- end -}}
+         {{- with $width }} width="{{ . }}"{{ end -}}
+         {{- with .Get "height" }} height="{{ . }}"{{ end -}}
+    /> <!-- Closing img tag -->
+    {{- if .Get "link" }}</a>{{ end -}}
+    {{- if or (.Get "title") (.Get "subTitle") -}}
+        <figcaption style="margin-left: 1em; float: right;">
+            {{ with (.Get "title") -}}
+                <q>{{ . }}</q>
+            {{- end -}}
+            {{- with (.Get "subTitle" | markdownify) -}}
+                <p>{{.}}</p>
+            {{- end -}}
+            {{- with or (.Get "author") (.Get "authors") -}}
+                {{- $authors := split . "," -}}
+                {{- if gt (len $authors) 1 -}}
+                    <p>Authors: {{ delimit $authors ", " }}</p>
+                {{- else -}}
+                    <p>Author: {{.}}</p>
+                {{- end -}}
+            {{- end -}}
+            {{- $links := slice (.Get "link1") (.Get "link2") (.Get "link3") (.Get "link4")  -}}
+            {{- if $links -}}
+                <ul>
+                {{- range ($links | complement (slice "")) -}}
+                    {{- $url := urls.Parse . -}}
+                    {{- $href := . -}}
+
+                    {{- if hasPrefix (trim $url.Host "www.") "amazon." -}}
+                        {{- $url_params := $amazon_affiliate | append $tracking_params | append "utm_source" $url.Host -}}
+                        {{- $href = printf "%s?%s" $href ((querify $url_params) | safeURL) -}}
+                    {{- end -}}
+                    <li><a href="{{ $href }}" target="_blank">{{ trim $url.Host "www." }}</a></li>
+                {{- end -}}
+                </ul>
+            {{- end -}}
+        </figcaption>
+    {{- end }}
+</figure>

@@ -1,0 +1,46 @@
+.archive-books {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+}
+
+.archive-books img {
+    object-fit: contain;
+    height: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .book-entry {
+        display: flex;
+        width: 100%;
+    }
+
+    .book-cover {
+        flex-direction: column;
+        vertical-align: middle;
+    }
+    .book-cover figure {
+        margin-top: 0.5em;
+        vertical-align: middle;
+    }
+    .book-details {
+        flex-direction: row;
+        float: right;
+        margin-left: 1em;
+    }
+
+    .archive-books img {
+        max-width: 10cap;
+        vertical-align: middle;
+    }
+
+    .archive-meta {
+        flex-direction: row;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .book-entry {
+        max-width: 220px;
+    }
+}

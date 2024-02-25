@@ -1,0 +1,72 @@
+{{- define "main" }}
+
+{{- $pages := where site.RegularPages ".Params.categories" "intersect" (slice "Book") }}
+
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  <div class="post-description"></div>
+  <ul class="post-tags">
+    {{- $scratch := newScratch }}
+    {{- range $pages }}
+      {{- $scratch.Add "tags" .Params.tags }}
+    {{- end }}
+    {{- $tags := $scratch.Get "tags" | uniq | sort }}
+
+    {{- range $tag := $tags }}
+      {{- with site.GetPage (path.Join "tags" ($tag | urlize)) }}
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }} <sup><strong><sup>{{ index .Site.Taxonomies.tags ($tag | urlize) | len }}</sup></strong></sup></a></li>
+      {{- end }}
+    {{- end }}
+  </ul>
+</header>
+
+{{- range $pages.GroupByPublishDate "2006" }}
+{{- if ne .Key "0001" }}
+<div class="archive-year">
+  <h2 class="archive-year-header">
+    {{- replace .Key "0001" "" }}<sup class="archive-count">&nbsp;&nbsp;{{ len .Pages }} {{ if gt (len .Pages) 1 }}books{{ else }}book{{ end }}</sup>
+  </h2>
+    <div class="archive-books">
+      {{- range .Pages }}
+      {{- if eq .Kind "page" }}
+      <div class="archive-entry book-entry">
+        <div class="book-cover">
+          <figure>
+            <a href="{{ .Permalink }}" target="_blank">
+              <img loading="lazy" src="{{ (path.Join .RelPermalink .Params.cover.image) | absURL }}" alt="{{ .Title }} book cover "/> <!-- Closing img tag -->
+            </a>
+          </figure>
+        </div>
+        <div class="book-details">
+          <h3 class="archive-entry-title">
+            <q>{{- .Title | markdownify }}</q>{{ with .Params.sub_title }} <small>{{.}}</small>{{ end }}
+            <br />
+            <sub>{{ delimit .Params.book_authors ", " }}</sub>
+            {{- if .Draft }}<sup><span class="entry-isdraft">&nbsp;&nbsp;[draft]</span></sup>{{- end }}
+          </h3>
+          <div class="archive-meta">
+            {{- if not .Date.IsZero -}}
+              {{- $date := time.Format (default "January 2, 2006" site.Params.DateFormat) .Date }}
+              <div title="{{ $date }}">{{ $date }}</div>
+            {{- end }}
+
+            {{- with .Params.book_rating }}
+              <div>{{- partial "book_stars.html" . }}</div>
+            {{- end }}
+
+            {{- with .Params.tags }}
+              <div>{{- delimit . ", " }}</div>
+            {{- end }}
+          </div>
+          <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+        </div>
+      </div>
+      {{- end }}
+      {{- end }}
+    </div>
+  </div>
+</div>
+{{- end }}
+{{- end }}
+
+{{- end }}

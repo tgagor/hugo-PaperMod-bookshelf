@@ -1,0 +1,35 @@
+name: Generate test site to ensure it works
+
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+      - bugfix/*
+
+jobs:
+  build-exampleSite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 0.121.2
+          extended: true
+
+      - name: Build for test
+        run: |
+          cd exampleSite
+
+          # install PaperMod theme
+          git clone --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+
+          # install PaperMod-bookshelf theme
+          ln -s ../ themes/PaperMod-bookshelf
+
+          hugo --minify

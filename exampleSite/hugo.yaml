@@ -1,0 +1,21 @@
+baseURL: 'https://example.org/'
+languageCode: 'en-us'
+title: 'My New Hugo Site about books'
+
+theme:
+  - PaperMod
+  - PaperMod-bookshelf
+
+params:
+  cover:
+    responsiveImages: true
+    hidden: false # hide everywhere but not in structured data
+    hiddenInList: false # hide on list pages and home
+    # setting to true will show potentially huge cover image, I prefer to disable it
+    # hiddenInSingle: true
+
+menu:
+  main:
+    - name: Bookshelf
+      url: /bookshelf/
+      weight: 3
