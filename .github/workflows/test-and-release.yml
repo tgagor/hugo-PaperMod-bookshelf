@@ -3,7 +3,7 @@ name: Generate test site to ensure it works
 on:
   push:
     branches:
-      - master
+      - main
       - feature/*
       - bugfix/*
 
