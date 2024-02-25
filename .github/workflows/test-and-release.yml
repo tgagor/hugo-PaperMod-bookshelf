@@ -1,0 +1,56 @@
+name: Generate test site to ensure it works
+
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+      - bugfix/*
+
+jobs:
+  build-exampleSite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 0.121.2
+          extended: true
+
+      - name: Test if exmapleSite can be built
+        run: |
+          cd exampleSite
+
+          # install PaperMod theme
+          git clone --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+
+          # install PaperMod-bookshelf theme
+          ln -s ../ themes/PaperMod-bookshelf
+
+          hugo --minify
+
+          # clean up
+          rm -rf themes/*
+
+
+      - name: Bump version and push tag
+        if: github.ref == 'refs/heads/main'
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create normal GitHub release
+        if: github.ref == 'refs/heads/main' && github.event_name != 'schedule'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
