@@ -19,12 +19,14 @@ This is an extension, a set of shortcodes and templates to the original [PaperMo
     cd your-site-location
 
     git submodule add --depth=1 https://github.com/tgagor/hugo-PaperMod-bookshelf.git themes/PaperMod-bookshelf
+    ```
 
-    # initialize any uninitialized submodules in the repository
-    # and then recursively update all submodules
-    # to their latest versions
+    You might need to initialize any uninitialized submodules in the repository and then recursively update all submodules to their latest versions to make it fully available:
+
+    ```bash
     git submodule update --init --recursive
     ```
+
 - or by just cloning
     ```bash
     cd your-site-location
