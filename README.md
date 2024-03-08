@@ -1,5 +1,10 @@
 # PaperMod-bookshelf
 
+[![build](https://github.com/tgagor/hugo-PaperMod-bookshelf/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/tgagor/hugo-PaperMod-bookshelf/actions/workflows/test-and-release.yml)
+![GitHub](https://img.shields.io/github/license/tgagor/hugo-PaperMod-bookshelf)
+![GitHub Release Date](https://img.shields.io/github/release-date/tgagor/hugo-PaperMod-bookshelf)
+
+
 This is an extension, a set of shortcodes and templates to the original [PaperMod theme](https://github.com/adityatelange/hugo-PaperMod), with a page dedicated to listing the books I've read.
 
 [Live demo on my blog](https://gagor.pl/bookshelf/).

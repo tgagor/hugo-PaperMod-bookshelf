@@ -1,4 +1,4 @@
-name: Generate test site to ensure it works
+name: Testing and Release
 
 on:
   push:
