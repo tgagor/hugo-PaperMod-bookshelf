@@ -6,6 +6,9 @@ on:
       - main
       - feature/*
       - bugfix/*
+  pull_request:
+    branches:
+      - dependabot/*
 
 jobs:
   build:
