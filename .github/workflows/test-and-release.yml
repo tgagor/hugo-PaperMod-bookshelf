@@ -8,7 +8,7 @@ on:
       - bugfix/*
 
 jobs:
-  build-exampleSite:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +37,15 @@ jobs:
           # clean up
           rm -rf themes/*
 
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
 
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/main'
@@ -58,7 +67,7 @@ jobs:
   dependabot:
     runs-on: ubuntu-latest
     needs:
-      - build-exampleSite
+      - build
     permissions:
       pull-requests: write
       contents: write
