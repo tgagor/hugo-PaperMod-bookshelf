@@ -30,7 +30,8 @@ jobs:
           git clone --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
 
           # install PaperMod-bookshelf theme
-          ln -s ../ themes/PaperMod-bookshelf
+          mkdir -p themes/PaperMod-bookshelf
+          cp ../{archetypes,assets,images,layouts} themes/PaperMod-bookshelf/
 
           hugo --minify
 

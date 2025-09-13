@@ -1,1 +1,3 @@
 exampleSite/themes
+.hugo_build.lock
+public
