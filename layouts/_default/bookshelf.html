@@ -14,7 +14,7 @@
 
     {{- range $tag := $tags }}
       {{- with site.GetPage (path.Join "tags" ($tag | urlize)) }}
-      <li><a href="{{ .Permalink }}">{{ .LinkTitle }} <sup><strong><sup>{{ index .Site.Taxonomies.tags ($tag | urlize) | len }}</sup></strong></sup></a></li>
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }} <sup><strong><sup>{{ .Pages | len }}</sup></strong></sup></a></li>
       {{- end }}
     {{- end }}
   </ul>
@@ -33,7 +33,7 @@
         <div class="book-cover">
           <figure>
             <a href="{{ .Permalink }}" target="_blank">
-              <img loading="lazy" src="{{ (path.Join .RelPermalink .Params.cover.image) | absURL }}" alt="{{ .Title }} book cover "/> <!-- Closing img tag -->
+              <img loading="lazy" src="{{ (path.Join .RelPermalink .Params.cover.image) | absURL }}" alt="{{ .Title }} book cover "/>
             </a>
           </figure>
         </div>
